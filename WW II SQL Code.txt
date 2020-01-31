@@ -1,4 +1,4 @@
-create table WWII_ops (
+create table WWIIops2 (
 Mission_ID INT,
 PRIMARY KEY(Mission_ID),
 Mission_Date Date,
@@ -28,4 +28,4 @@ Fragmentation_Devices_Weight_LBS INT,
 Fragmentation_Devices_Weight_Tons INT,
 Total_Weight_LBS INT,
 Total_Weight_Tons INT);
-SELECT * FROM "public"."WWII_ops";
+SELECT * FROM "public"."WWIIops2";
