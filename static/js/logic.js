@@ -1,84 +1,35 @@
 
-function drawLines() {  //----------------------------------
+// function colors(i) {
 
-	for (var  i= 0; i < data.length; i++) {
+//     if (data[i]["Country"] == "GREAT BRITAIN") {
+//         return "red"
+//     }   else if (data[i]["Country"] == "USA") {
+//         return "blue"
+//     }   else if (data[i]["Country"] == "NEW ZEALAND") {
+//         return "yellow"
+//     }   else if (data[i]["Country"] == "SOUTH AFRICA") {
+//         return "orange"    
+//     }   else {
+//         return "black"
+//     }
 
-        var source = [data[i]["Takeoff Latitude"], data[i]["Takeoff Longitude"]];
-        var destination = [data[i]["Target Latitude"], data[i]["Target Longitude"]];
-        //console.log(source, destination);
-
-        // lay down color-coded markers for origin of attack
-        L.circleMarker(source, {
-            radius: 4,
-            stroke: false,
-            color: "green",
-            fillOpacity: 1
-        }).bindPopup(data[i]["Country"] + "<br>" + data[i]["Takeoff Base"], {
-                //offset: (0,0)
-            })
-            .addTo(myMap)
-            .on('mouseover', function (e) {
-                this.openPopup()
-            .on('mouseout', function (e) {
-                this.closePopup();
-            });
-        });
-        
-        // lay down gray markers for target
-        L.circleMarker(destination, {
-            radius: 10,
-            stroke: false,
-            color: "gray",
-            fillOpacity: 0.3
-        }).bindPopup(data[i]["Target City"] + "<br>" + data[i]["Target Country"])
-            .addTo(myMap)
-            .on('mouseover', function (e) {
-                this.openPopup()
-            .on('mouseout', function (e) {
-                this.closePopup();
-            });
-        });
-
-        // draw attack lines
-	    L.polyline([source, destination], {
-	    	snakingSpeed: 10,
-    		color: colors(i),
-    		weight: 1
-    	}).addTo(myMap).snakeIn();
-    };
-} //--------------------------------------------------------
-
-function colors(i) {
-
-    if (data[i]["Country"] == "GREAT BRITAIN") {
-        return "red"
-    }   else if (data[i]["Country"] == "USA") {
-        return "blue"
-    }   else if (data[i]["Country"] == "NEW ZEALAND") {
-        return "yellow"
-    }   else if (data[i]["Country"] == "SOUTH AFRICA") {
-        return "orange"    
-    }   else {
-        return "black"
-    }
-
-}
-
-var data;
-Papa.parse('static/data/WWIIops2.csv', {
-    header: true,
-    download: true,
-    dynamicTyping: true,
-    complete: function(results) {
-        console.log(results);
-        data = results.data;
-        //console.log(data);
+// }
+// return(data )
+// var data;
+// Papa.parse('static/data/WWIIops2.csv', {
+//     header: true,
+//     download: true,
+//     dynamicTyping: true,
+//     complete: function(results) {
+//         console.log(results);
+//         data = results.data;
+//         //console.log(data);
 
 
-        drawLines(); // Call function
+//         drawLines(); // Call function
 
-    }
-});
+//     }
+// });
 
     //create base layers
 // var baseMaps = {
@@ -93,12 +44,12 @@ Papa.parse('static/data/WWIIops2.csv', {
     //Markers: groupedMarkers
 // };
 
-var myMap = L.map("map", {
-    center: [30,90],
-    zoom: 3,
-    layers: layer0  // change to [baseMaps, overlayMaps] show default layer
-    })
-;
+// var myMap = L.map("map", {
+//     center: [30,90],
+//     zoom: 3,
+//     layers: layer0  // change to [baseMaps, overlayMaps] show default layer
+//     })
+// ;
 
 //     //add layer control
 // L.control.layers(baseMaps, overlayMaps, {
@@ -107,79 +58,236 @@ var myMap = L.map("map", {
 // ;
 
 
+function createMap(Markers) {
 
-
-
-
-
-//create tile layers
-var layer0 = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
-    maxZoom: 18,
-    id: "mapbox.dark",
-    accessToken: API_KEY
-});//.addTo(myMap);
-myMap.addLayer(layer0);
-
-var scale = L.control.scale(); // Creating scale control
-         scale.addTo(myMap); // Adding scale control to the map
-
-
-    // baseMap1939 = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
-    //    attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
-    //   maxZoom: 18,
-    //   id: "mapbox.light",
-    //   accessToken: API_KEY
-    // });
-
-
-
-
-    //overlay1 = L.marker([0,0]).addTo(myMap);  //empty array to hold line data
-    //overlay1 = L.layerGroup(groupedLines)//.snakeIn();
-
-
-    // overlay2 = L.marker([10,10]).addTo(myMap);
-
-    // var circle1 = L.circle([20, 20], {radius: 100000}).addTo(myMap);
-    // circle1.bindPopup('<p>Hello world!<br />This is a test popup.</p>');
-    // circle1.on('mouseover', function (e) {
-    //     this.openPopup()
-    // });
-    // circle1.on('mouseout', function (e) {
-    //     this.closePopup()
-    // });
-
+    var layer0 = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
+        maxZoom: 18,
+        id: "mapbox.dark",
+        accessToken: API_KEY
+    });//.addTo(myMap);
     
-
-
-
-    //create a marker for each coordinate
-    // var y = []; //create array to hold markers
-    // markers = [];
-    // for (i = 0; i < targetLoc.length; i++) {
-    // 	y = L.circle([targetLoc[i][1], targetLoc[i][0]]), {
-    // 		stroke: false,
-    // 		fillOpacity: 1,
-    // 		color: "green",
-    // 		radius: 15
-    // 	}
-    // 	markers.push(y);	
+    var scale = L.control.scale(); // Creating scale control
+             scale.addTo(myMap); // Adding scale control to the map
+    
+    var myMap = L.map("map", {
+    center: [30,90],
+    zoom: 3,
+    layers: [layer0, Markers]  // change to [baseMaps, overlayMaps] show default layer
+    })}
+;
+    // // Create a baseMaps object to hold the lightmap layer
+    // var baseMaps = {
+    //   "Light Map": lightmap
     // };
-    // console.log(markers);
-    // var groupedMarkers = L.layerGroup(markers);
+  
+    // // Create an overlayMaps object to hold the bikeStations layer
+    // var overlayMaps = {
+    //   "Bike Stations": bikeStations
+    // };
+  
+    // // Create the map object with options
+    // var map = L.map("map-id", {
+    //   center: [40.73, -74.0059],
+    //   zoom: 12,
+    //   layers: [lightmap, bikeStations]
+    // });
+  
+    // // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+    // L.control.layers(baseMaps, overlayMaps, {
+    //   collapsed: false
+    // }).addTo(map);
+// }
+
+// function createMarkers(response) {
+
+//     // Pull the "stations" property off of response.data
+//     var stations = response.data.stations;
+  
+//     // Initialize an array to hold bike markers
+//     var bikeMarkers = [];
+  
+//     // Loop through the stations array
+//     for (var index = 0; index < stations.length; index++) {
+//       var station = stations[index];
+  
+//       // For each station, create a marker and bind a popup with the station's name
+//       var bikeMarker = L.marker([station.lat, station.lon])
+//         .bindPopup("<h3>" + station.name + "<h3><h3>Capacity: " + station.capacity + "<h3>");
+  
+//       // Add the marker to the bikeMarkers array
+//       bikeMarkers.push(bikeMarker);
+//     }
+  
+//     // Create a layer group made from the bike markers array, pass it into the createMap function
+//     createMap(L.layerGroup(bikeMarkers));
+// }
+
+function drawLines(response) {  //----------------------------------
+
+    var Orimarkers = [];
+    var Desmarkers = [];
+    var ODLine = [];
+
+    for (var index =0; index <response.data.length; index++) {
+      var Orimarker = L.circleMarker(response.data.Takeoff_Latitude,response.data.Takeoff_Latitude, {
+        radius: 4,
+        stroke: false,
+        color: "green",
+        fillOpacity: 1
+    }).bindPopup(response.data.Country + "<br>" + response.data.Takeoff_Base)
+        .addTo(myMap)
+        .on('mouseover', function () {
+            this.openPopup()
+        .on('mouseout', function () {
+            this.closePopup();
+            });
+        });
+
+     Orimarkers.push(Orimarker);
+
+     var Desmarker = L.circleMarker(response.data.Target_Latitude,response.data.Target_Latitude, {
+        radius: 10,
+        stroke: false,
+        color: "gray",
+        fillOpacity: 0.3
+    }).bindPopup(response.data.Target_City + "<br>" + response.data.Target_Country)
+        .addTo(myMap)
+        .on('mouseover', function () {
+            this.openPopup()
+        .on('mouseout', function () {
+            this.closePopup();
+            });
+        });
+
+     Desmarkers.push(Desmarker);
+
+     var Line = L.polyline([response.data.Takeoff_Latitude,response.data.Takeoff_Latitude,response.data.Target_Latitude,response.data.Target_Latitude], {
+        snakingSpeed: 10,
+        color: colors(i),
+        weight: 1
+    })
+     
+     ODLine.push(Line);
+    }
+
+    // L.polyline([source, destination], {
+    //     snakingSpeed: 10,
+    //     color: colors(i),
+    //     weight: 1
+    // }).addTo(myMap).snakeIn();
+
+    createMap(L.layerGroup(Orimarkers));
+    // createMap(L.layerGroup(Desmarkers));
+    // createMap(L.layerGroup(ODLine));
 
 
-    // linesToLayer = L.polyline(linesGrouped, {
-    // 	snakingSpeed: 300,
-    // 	color: "red",
-    // 	weight: 1
-    //})//.addTo(overlay).snakeIn();
+} //--------------------------------------------------------
 
 
+	// for (var  i= 0; i < data.length; i++) {
+
+    //     var source = [data[i]["Takeoff Latitude"], data[i]["Takeoff Longitude"]];
+    //     var destination = [data[i]["Target Latitude"], data[i]["Target Longitude"]];
+    //     //console.log(source, destination);
+
+        // // lay down color-coded markers for origin of attack
+        // L.circleMarker(source, {
+        //     radius: 4,
+        //     stroke: false,
+        //     color: "green",
+        //     fillOpacity: 1
+        // }).bindPopup(data[i]["Country"] + "<br>" + data[i]["Takeoff Base"], {
+        //         //offset: (0,0)
+        //     })
+        //     .addTo(myMap)
+        //     .on('mouseover', function (e) {
+        //         this.openPopup()
+        //     .on('mouseout', function (e) {
+        //         this.closePopup();
+        //     });
+        // });
+        
+        // lay down gray markers for target
+        // L.circleMarker(destination, {
+        //     radius: 10,
+        //     stroke: false,
+        //     color: "gray",
+        //     fillOpacity: 0.3
+        // }).bindPopup(data[i]["Target City"] + "<br>" + data[i]["Target Country"])
+        //     .addTo(myMap)
+        //     .on('mouseover', function (e) {
+        //         this.openPopup()
+        //     .on('mouseout', function (e) {
+        //         this.closePopup();
+        //     });
+        // });
+
+        // draw attack lines
+// 	    L.polyline([source, destination], {
+// 	    	snakingSpeed: 10,
+//     		color: colors(i),
+//     		weight: 1
+//     	}).addTo(myMap).snakeIn();
+//     };
+// } //--------------------------------------------------------
 
 
+// function drawLines() {  //----------------------------------
+
+// 	for (var  i= 0; i < data.length; i++) {
+
+//         var source = [data[i]["Takeoff Latitude"], data[i]["Takeoff Longitude"]];
+//         var destination = [data[i]["Target Latitude"], data[i]["Target Longitude"]];
+//         //console.log(source, destination);
+
+//         // lay down color-coded markers for origin of attack
+//         L.circleMarker(source, {
+//             radius: 4,
+//             stroke: false,
+//             color: "green",
+//             fillOpacity: 1
+//         }).bindPopup(data[i]["Country"] + "<br>" + data[i]["Takeoff Base"], {
+//                 //offset: (0,0)
+//             })
+//             .addTo(myMap)
+//             .on('mouseover', function (e) {
+//                 this.openPopup()
+//             .on('mouseout', function (e) {
+//                 this.closePopup();
+//             });
+//         });
+        
+//         // lay down gray markers for target
+//         L.circleMarker(destination, {
+//             radius: 10,
+//             stroke: false,
+//             color: "gray",
+//             fillOpacity: 0.3
+//         }).bindPopup(data[i]["Target City"] + "<br>" + data[i]["Target Country"])
+//             .addTo(myMap)
+//             .on('mouseover', function (e) {
+//                 this.openPopup()
+//             .on('mouseout', function (e) {
+//                 this.closePopup();
+//             });
+//         });
+
+//         // draw attack lines
+// 	    L.polyline([source, destination], {
+// 	    	snakingSpeed: 10,
+//     		color: colors(i),
+//     		weight: 1
+//     	}).addTo(myMap).snakeIn();
+//     };
+// } //--------------------------------------------------------
 
 
+var queryUrl = "http://localhost:5000/WWII"
+
+d3.json(queryUrl,function(data) {
+    // Once we get a response, send the data.features object to the createFeatures function
+    drawLines(data);
+});
 
 
