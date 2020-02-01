@@ -17,7 +17,7 @@ def handle_alt():
     if request.method == 'POST':
         if request.is_json:
             data = request.get_json()
-            new_alt = db.session.execute('select country from WIIops2')
+            new_alt = db.session.execute('select country from WWIIop2')
             db.session.add(new_alt)
             db.session.commit()
             return {"message": f"car {new_alt.Country} has been created successfully."}
@@ -25,35 +25,36 @@ def handle_alt():
             return {"error": "The request payload is not in JSON format"}
 
     elif request.method == 'GET':
-        alt = db.session.execute('select * from wwiii_ops limit 100')
+        alt = db.session.execute('Select * From "WWIIop2"')
         columns = (
-            'Mission ID',
-            'Mission Date','Theater of Operations',
+            'Mission_ID',
+            'Mission_Date',
+            'Theater_of_Operations',
             'Country',
             'Aircraft' ,
-            'Takeoff Base',
-            'Takeoff Location' ,
-            'Takeoff Latitude' ,
-            'Takeoff Longitude' ,
-            'Target Country' ,
-            'Target City' ,
-            'Target Latitude' ,
-            'Target Longitude' ,
+            'Takeoff_Base',
+            'Takeoff_Location' ,
+            'Takeoff_Latitude' ,
+            'Takeoff_Longitude' ,
+            'Target_Country' ,
+            'Target_City' ,
+            'Target_Latitude' ,
+            'Target_Longitude' ,
             'Altitude',
-            'High Explosives',
-            'High Explosives_Type' ,
-            'High Explosives_Weight',
-            'High Explosives_Weight_Tons',
-            'Incendiary Devices',
-            'Incendiary Devices_Type',
-            'Incendiary Devices_Weight',
-            'Incendairy Devices_Weight_Tons',
-            'Fragmentation Devices',
-            'Fragmentation Devices_Type',
-            'Fragmentation Devices_Weight',
-            'Fragmentation Devices_Weight_Tons',
-            'Total Weight',
-            'Total Weight Tons'
+            'High_Explosives',
+            'High_Explosives_Type' ,
+            'High_Explosives_Weight',
+            'High_Explosives_Weight_Tons',
+            'Incendiary_Devices',
+            'Incendiary_Devices_Type',
+            'Incendiary_Devices_Weight',
+            'Incendairy_Devices_Weight_Tons',
+            'Fragmentation_Devices',
+            'Fragmentation_Devices_Type',
+            'Fragmentation_Devices_Weight',
+            'Fragmentation_Devices_Weight_Tons',
+            'Total_Weight',
+            'Total_Weight_Tons'
         )
         alt2 = alt.fetchall()
         results = []
